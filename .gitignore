@@ -4,3 +4,4 @@ headerless
 .idea
 aws.sh
 deploy.sh
+deploy_docker_hub.sh
