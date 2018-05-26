@@ -16,7 +16,7 @@ Except next:
 
 For example:
 ```
-http://127.0.0.1:8000/?headerless_token=secret&url=http://httpbin.org/anything&test_header=test&User-Agent=me&method=POST&body=123
+http://127.0.0.1:8000/?headerless_token=secret&headerless_url=http://httpbin.org/anything&test_header=test&User-Agent=me&headerless_method=POST&headerless_body=123
 ```
 Will be translated to:
 ```
