@@ -19,11 +19,11 @@ func makeRequest(queryString map[string][]string) (int, io.Reader, map[string][]
 
 	for k, v := range queryString {
 		switch k {
-		case "url":
+		case "headerless_url":
 			url = v[0]
-		case "body":
+		case "headerless_body":
 			body = v[0]
-		case "method":
+		case "headerless_method":
 			method = v[0]
 		case "headerless_token":
 			if v[0] == TOKEN {
