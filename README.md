@@ -32,6 +32,12 @@ User-Agent: me
 123
 ```
 
+## TLS
+
+Can be run with TLS. To do so add next environment variables:
+* `TLS_CERT` - path to your `.crt` file
+* `TLS_KEY` - path to your `.key` file
+
 ## Directly
 
 Build with:
