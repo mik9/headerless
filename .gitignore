@@ -2,3 +2,5 @@ lambda
 lambda.zip
 headerless
 .idea
+aws.sh
+deploy.sh
