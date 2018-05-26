@@ -1,6 +1,6 @@
 # Headerless
 
-Simple proxy for evnironments where you can do HTTP
+Simple proxy for environments where you can do HTTP
 requests but it's hard or imposible to use (like Mikrotik Router OS).
 
 Can be used [directly](#directly), with [docker](#docker) or with [Amazon Lambda](#amazon-lambda).
@@ -45,12 +45,12 @@ HEADERLESS_TOKEN=secret ./headerless
 ```
 
 ## Docker
-Using prepader image:
+Using prepared image:
 ```
 docker run -d -p 8000:8000 -e HEADERLESS_TOKEN=secret mik9/headerless
 ```
 
-Or build youresf:
+Or build yourself:
 ```
 docker build -t headerless .
 docker run -d -p 8000:8000 -e HEADERLESS_TOKEN=secret headerless
