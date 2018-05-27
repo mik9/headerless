@@ -52,7 +52,10 @@ func makeRequest(queryString map[string][]string) (int, io.ReadCloser, map[strin
 
 	fmt.Printf("method = %s, url = %s, body = %s\n", method, url, body)
 
-	req, _ := http.NewRequest(method, url.(string), bodyReader)
+	req, err := http.NewRequest(method, url.(string), bodyReader)
+	if err != nil {
+		return http.StatusBadRequest, makeErrorReadCloser(fmt.Sprintf("Cannot prepare request: %s", err.Error())), nil
+	}
 	for k, v := range headers {
 		for _, vv := range v {
 			fmt.Printf("add header %s: %s\n", k, vv)
