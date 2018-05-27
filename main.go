@@ -40,7 +40,7 @@ func makeRequest(queryString map[string][]string) (int, io.ReadCloser, map[strin
 	}
 
 	if url == nil {
-		return http.StatusBadRequest, makeErrorReadCloser("url not set"), nil
+		return http.StatusBadRequest, makeErrorReadCloser("headerless_url not set"), nil
 	}
 
 	var bodyReader interface{ io.Reader }
