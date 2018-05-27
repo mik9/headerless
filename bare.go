@@ -10,7 +10,7 @@ import (
 )
 
 func setup(handler func(queryString map[string][]string) (int, io.ReadCloser, map[string][]string)) {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	handlerFunc := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		code, body, headers := handler(r.URL.Query())
 		w.WriteHeader(code)
 		io.Copy(w, body)
@@ -25,12 +25,28 @@ func setup(handler func(queryString map[string][]string) (int, io.ReadCloser, ma
 	})
 
 	cert, certSet := os.LookupEnv("TLS_CERT")
-	if certSet {
+	key, keySet := os.LookupEnv("TLS_KEY")
+
+	if certSet != keySet {
+		if !certSet {
+			panic("TLS_KEY set but TLS_CERT not set")
+		}
+		if !keySet {
+			panic("TLS_CERT set but TLS_KEY not set")
+		}
+	}
+
+	server := http.Server{Addr: ":8000", Handler: handlerFunc}
+	var err error
+	if certSet && keySet {
 		fmt.Printf("Using TLS\n")
-		key := os.Getenv("TLS_KEY")
-		http.ListenAndServeTLS(":8000", cert, key, nil)
+		err = server.ListenAndServeTLS(cert, key)
 	} else {
 		fmt.Printf("No TLS\n")
-		http.ListenAndServe(":8000", nil)
+		err = server.ListenAndServe()
+	}
+
+	if err != nil {
+		panic(err)
 	}
 }
