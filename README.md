@@ -76,3 +76,5 @@ aws lambda update-function-code \
     --function-name YOUR_LAMBDA \
     --zip-file fileb://lambda.zip
 ```
+
+Create `API Gateway` for this lambda and enable `Use Lambda Proxy integration` in integration step.
