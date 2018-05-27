@@ -1,7 +1,7 @@
 # Headerless
 
 Simple proxy for environments where you can do HTTP
-requests but it's hard or imposible to use (like Mikrotik Router OS).
+requests but it's hard or imposible to use HTTP headers (like Mikrotik Router OS).
 
 Can be used [directly](#directly), with [docker](#docker) or with [Amazon Lambda](#amazon-lambda).
 
