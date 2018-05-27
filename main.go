@@ -20,13 +20,13 @@ func makeRequest(queryString map[string][]string) (int, io.ReadCloser, map[strin
 
 	for k, v := range queryString {
 		switch k {
-		case "headerless_url":
+		case withPrefix("url"):
 			url = v[0]
-		case "headerless_body":
+		case withPrefix("body"):
 			body = v[0]
-		case "headerless_method":
+		case withPrefix("method"):
 			method = v[0]
-		case "headerless_token":
+		case withPrefix("token"):
 			if v[0] == TOKEN {
 				tokenCheckDone = true
 			}
@@ -40,7 +40,7 @@ func makeRequest(queryString map[string][]string) (int, io.ReadCloser, map[strin
 	}
 
 	if url == nil {
-		return http.StatusBadRequest, makeErrorReadCloser("headerless_url not set"), nil
+		return http.StatusBadRequest, makeErrorReadCloser(withPrefix("url") + " not set"), nil
 	}
 
 	var bodyReader interface{ io.Reader }
@@ -69,6 +69,10 @@ func makeRequest(queryString map[string][]string) (int, io.ReadCloser, map[strin
 	}
 
 	return resp.StatusCode, resp.Body, resp.Header
+}
+
+func withPrefix(name string) string {
+	return "headerless_" + name
 }
 
 func makeErrorReadCloser(text string) io.ReadCloser {
