@@ -9,11 +9,12 @@ import (
 	"fmt"
 )
 
-func setup(handler func(queryString map[string][]string) (int, io.Reader, map[string][]string)) {
+func setup(handler func(queryString map[string][]string) (int, io.ReadCloser, map[string][]string)) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		code, body, headers := handler(r.URL.Query())
 		w.WriteHeader(code)
 		io.Copy(w, body)
+		body.Close()
 		if headers != nil {
 			for k, v := range headers {
 				for _, vv := range v {

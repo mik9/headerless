@@ -6,11 +6,12 @@ import (
 	"io"
 	"fmt"
 	"os"
+	"io/ioutil"
 )
 
 var TOKEN = os.Getenv("HEADERLESS_TOKEN")
 
-func makeRequest(queryString map[string][]string) (int, io.Reader, map[string][]string) {
+func makeRequest(queryString map[string][]string) (int, io.ReadCloser, map[string][]string) {
 	var headers = map[string][]string{}
 	var url interface{}
 	var body interface{}
@@ -35,11 +36,11 @@ func makeRequest(queryString map[string][]string) (int, io.Reader, map[string][]
 	}
 
 	if !tokenCheckDone {
-		return http.StatusForbidden, strings.NewReader("Access denied"), nil
+		return http.StatusForbidden, makeErrorReadCloser("Access denied"), nil
 	}
 
 	if url == nil {
-		return http.StatusBadRequest, strings.NewReader("url not set"), nil
+		return http.StatusBadRequest, makeErrorReadCloser("url not set"), nil
 	}
 
 	var bodyReader interface{ io.Reader }
@@ -61,10 +62,14 @@ func makeRequest(queryString map[string][]string) (int, io.Reader, map[string][]
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return http.StatusInternalServerError, strings.NewReader(fmt.Sprintf("Error on request: %s", err.Error())), nil
+		return http.StatusInternalServerError, makeErrorReadCloser(fmt.Sprintf("Error on request: %s", err.Error())), nil
 	}
 
 	return resp.StatusCode, resp.Body, resp.Header
+}
+
+func makeErrorReadCloser(text string) io.ReadCloser {
+	return ioutil.NopCloser(strings.NewReader(text))
 }
 
 func main() {

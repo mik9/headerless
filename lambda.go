@@ -39,11 +39,12 @@ func multimapToMap(mm map[string][]string) map[string]string {
 	return m
 }
 
-func setup(handler func(queryString map[string][]string) (int, io.Reader, map[string][]string)) {
+func setup(handler func(queryString map[string][]string) (int, io.ReadCloser, map[string][]string)) {
 	lambda.Start(func(ctx context.Context, event MyEvent) (MyResponse, error) {
 		code, body, headers := handler(mapToMultimap(event.QueryStringParameters))
 
 		b, err := ioutil.ReadAll(body)
+		body.Close()
 		if err != nil {
 			panic(err)
 		}
